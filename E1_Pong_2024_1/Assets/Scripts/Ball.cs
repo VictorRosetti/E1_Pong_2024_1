@@ -47,6 +47,7 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter(Collision hit)
     {
+        GetComponent<AudioSource>().Play();
         if(hit.gameObject.name=="Left")
         {
             transform.position = new Vector3(0,3,0);
@@ -64,4 +65,12 @@ public class Ball : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider touch)
+    {
+        if(touch.gameObject.name=="PowerUp2")
+        {
+            mainCam.fieldOfView = 60;
+            Destroy(touch.gameObject);
+        }
+    }
 }
