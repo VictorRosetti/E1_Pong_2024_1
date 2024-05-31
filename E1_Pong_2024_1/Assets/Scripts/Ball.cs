@@ -1,13 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Ball : MonoBehaviour
 {
     public float speed = 10;
+    public TMP_Text pointsLeft;
+    public TMP_Text pointsRight;
+    public Camera mainCam;
+    public GameObject power;
+    
+
+    int playerA_points=0;
+    int playerB_points=0;
     // Start is called before the first frame update
     void Start()
     {
+        if((playerA_points>=3)||(playerB_points>=3))
+        {
+            SceneManager.LoadScene(2);
+        }
         float x = Random.Range(0,2) == 0 ? -1:1;
         /*
         float x = Random.Range(0,2); 0..1
@@ -21,6 +35,8 @@ public class Ball : MonoBehaviour
         */
         float y = Random.Range(0,2)==0? -1:1;
         GetComponent<Rigidbody>().velocity = new Vector2(speed*x, speed*y);
+        pointsLeft.SetText(playerA_points.ToString());
+        pointsRight.SetText(playerB_points.ToString());
     }
 
     // Update is called once per frame
@@ -28,4 +44,24 @@ public class Ball : MonoBehaviour
     {
         
     }
+
+    void OnCollisionEnter(Collision hit)
+    {
+        if(hit.gameObject.name=="Left")
+        {
+            transform.position = new Vector3(0,3,0);
+            playerB_points++;
+            Start();
+        }else if(hit.gameObject.name=="Right")
+        {
+            transform.position=new Vector3(0,3,0);
+            playerA_points++;
+            Start();
+        }else if(hit.gameObject.name=="PowerUp")
+        {
+            mainCam.fieldOfView = 147;
+            Destroy(power);
+        }
+    }
+
 }
