@@ -12,7 +12,6 @@ public class Ball : MonoBehaviour
     public Camera mainCam;
     public GameObject power;
     
-
     int playerA_points=0;
     int playerB_points=0;
     // Start is called before the first frame update
@@ -61,7 +60,9 @@ public class Ball : MonoBehaviour
         }else if(hit.gameObject.name=="PowerUp")
         {
             mainCam.fieldOfView = 147;
-            Destroy(power);
+            //Destroy(power);
+            power.SetActive(false);
+            StartCoroutine(PowerEnd(5));
         }
     }
 
@@ -70,7 +71,14 @@ public class Ball : MonoBehaviour
         if(touch.gameObject.name=="PowerUp2")
         {
             mainCam.fieldOfView = 60;
-            Destroy(touch.gameObject);
+            touch.gameObject.SetActive(false);
+            //Destroy(touch.gameObject);
         }
+    }
+
+    IEnumerator PowerEnd(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        mainCam.fieldOfView = 60;
     }
 }
